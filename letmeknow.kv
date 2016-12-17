@@ -1,35 +1,34 @@
 #:kivy 1.0
 
 <home>:
-myLabel: LaFecha #la property 'myLabel' del objeto Home apunta al
-# Label children de este objeto
-myCalendar: cw_id#la property 'myCalendar' del objeto Home
+	myLabel: LaFecha 	#la property 'myLabel' del objeto Home apunta al
+				# Label children de este objeto
+	myCalendar: cw_id	#la property 'myCalendar' del objeto Home
 
 
 #children de este objeto home:
-BoxLayout:
-canvas.before:
-Color:
-rgb: .6, 0, 0
-Rectangle:
-pos: self.pos
-size: self.size
-orientation: 'vertical'
-padding: 10
-spacing: 10
-
-CalendarWidget:
-id: cw_id
-size_hint: 1, 0.6 #100% del ancho disp y 20% del alto disp.
-on_touch_up: root.showEvents()
-
-Label:
-id: LaFecha
-size_hint: 1, 0.3
-text: 'Fecha'
-
-Button:
-size_hint: 1, 0.1
-text: 'Crear Cita'
-on_press: root.mostrarCitas()
-
+	BoxLayout:
+		canvas.before:
+			Color:
+				rgb: .6, 0, 0
+			Rectangle:
+				pos: self.pos
+				size: self.size
+		orientation: 'vertical'
+		padding: 10
+		spacing: 10
+		
+		CalendarWidget:
+			id: cw_id
+			size_hint: 1, 0.6 #100% del ancho disp y 20% del alto disp.
+			on_touch_up: root.mostrarCitas()
+			
+		Label:
+			id: LaFecha
+			size_hint: 1, 0.3
+			text: 'Fecha'
+			
+		Button:
+			size_hint: 1, 0.1
+			text: 'Crear Cita'
+			on_press: root.showEvents()
