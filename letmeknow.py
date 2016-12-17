@@ -52,7 +52,7 @@ def get_credentials():
 	credential_dir = os.path.join(home_dir, '.credentials')
 	if not os.path.exists(credential_dir):
 		os.makedirs(credential_dir)
-		credential_path = os.path.join(credential_dir,
+	credential_path = os.path.join(credential_dir,
 		   'calendar-python-quickstart.json')
 
 	store = Storage(credential_path)
@@ -83,18 +83,15 @@ class Home(Screen):
 		calendarId='primary', timeMin=now, maxResults=10, singleEvents=True,
 		orderBy='startTime').execute()
 		events = eventsResult.get('items', [])
-
+		eventos = ''
 		if not events:
 			print('No upcoming events found.')
 		for event in events:
-			start = event['start'].get('dateTime', event['start'].get('date'))
-			inicio = event['start'].get('dateTime')
-			print(type(inicio))
-			print(inicio.strftime('%d - %m - %Y') , event['summary'])
-
-			#print(start, event['summary'])
-			print(strFecha, strHora, strTZ)
-			self.myLabel.text = event['summary']
+			inicio = str(event['start'].get('date'))
+			summary = str(event['summary'] )
+			print(inicio, summary)
+			eventos += inicio + ' - ' + summary + '\n'
+		self.myLabel.text = eventos
 
 class LetMeKnowApp(App):
 
