@@ -1,6 +1,5 @@
 #! usr/bin/python
 # -*- coding: utf-8 -*-
-
 ########################################################################
 # Let Me Know - Organizador de Agenda
 # Integra Google Calendar con Whatsapp
@@ -37,10 +36,10 @@ except ImportError:
 # at ~/.credentials/calendar-python-quickstart.json
 SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
 CLIENT_SECRET_FILE = 'secret_key.json'
-APPLICATION_NAME = 'AgendaApp'
+APPLICATION_NAME = 'LetMeKnowApp'
 
 
-Builder.load_file('agenda.kv')
+Builder.load_file('letmeknow.kv')
 
 
 
@@ -49,66 +48,61 @@ def get_credentials():
 #If nothing has been stored, or if the stored credentials are invalid,
 #the OAuth2 flow is completed to obtain the new credentials.
 
-home_dir = os.path.expanduser('~')
-credential_dir = os.path.join(home_dir, '.credentials')
-if not os.path.exists(credential_dir):
-os.makedirs(credential_dir)
-credential_path = os.path.join(credential_dir,
-   'calendar-python-quickstart.json')
+	home_dir = os.path.expanduser('~')
+	credential_dir = os.path.join(home_dir, '.credentials')
+	if not os.path.exists(credential_dir):
+		os.makedirs(credential_dir)
+		credential_path = os.path.join(credential_dir,
+		   'calendar-python-quickstart.json')
 
-store = Storage(credential_path)
-credentials = store.get()
-if not credentials or credentials.invalid:
-flow = client.flow_from_clientsecrets(CLIENT_SECRET_FILE, SCOPES)
-flow.user_agent = APPLICATION_NAME
-if flags:
-credentials = tools.run_flow(flow, store, flags)
-else: # Needed only for compatibility with Python 2.6
-credentials = tools.run(flow, store)
-print('Storing credentials to ' + credential_path)
-return credentials
-
-
+	store = Storage(credential_path)
+	credentials = store.get()
+	if not credentials or credentials.invalid:
+		flow = client.flow_from_clientsecrets(CLIENT_SECRET_FILE, SCOPES)
+		flow.user_agent = APPLICATION_NAME
+		if flags:
+			credentials = tools.run_flow(flow, store, flags)
+		else: # Needed only for compatibility with Python 2.6
+			credentials = tools.run(flow, store)
+		print('Storing credentials to ' + credential_path)
+	return credentials
 
 class Home(Screen):
 
-def showEvents(self):
-#Busca las citas del calendario correspondientes al dia seleccionado
-#y las muestra en el label de la home screen
+	def showEvents(self):
+		#Busca las citas del calendario correspondientes al dia seleccionado
+		#y las muestra en el label de la home screen
 
-credentials = get_credentials()
-http = credentials.authorize(httplib2.Http())
-service = discovery.build('calendar', 'v3', http=http)
+		credentials = get_credentials()
+		http = credentials.authorize(httplib2.Http())
+		service = discovery.build('calendar', 'v3', http=http)
 
-now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
-print('Getting the upcoming 10 events')
-eventsResult = service.events().list(
-calendarId='primary', timeMin=now, maxResults=10, singleEvents=True,
-orderBy='startTime').execute()
-events = eventsResult.get('items', [])
+		now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
+		print('Getting the upcoming 10 events')
+		eventsResult = service.events().list(
+		calendarId='primary', timeMin=now, maxResults=10, singleEvents=True,
+		orderBy='startTime').execute()
+		events = eventsResult.get('items', [])
 
-if not events:
-print('No upcoming events found.')
-for event in events:
-start = event['start'].get('dateTime', event['start'].get('date'))
-inicio = event['start'].get('dateTime')
-print(type(inicio))
-print(inicio.strftime('%d - %m - %Y') , event['summary'])
+		if not events:
+			print('No upcoming events found.')
+		for event in events:
+			start = event['start'].get('dateTime', event['start'].get('date'))
+			inicio = event['start'].get('dateTime')
+			print(type(inicio))
+			print(inicio.strftime('%d - %m - %Y') , event['summary'])
 
-#print(start, event['summary'])
-print(strFecha, strHora, strTZ)
-self.myLabel.text = event['summary']
-
-
-
+			#print(start, event['summary'])
+			print(strFecha, strHora, strTZ)
+			self.myLabel.text = event['summary']
 
 class LetMeKnowApp(App):
 
-def build(self):
-sm = ScreenManager()
-sm.add_widget(Home(name='home'))
+	def build(self):
+		sm = ScreenManager()
+		sm.add_widget(Home(name='home'))
 
-return sm
+		return sm
 
 if __name__ == '__main__':
     LetMeKnowApp().run()
