@@ -72,26 +72,39 @@ class Home(Screen):
 	def showEvents(self):
 		#Busca las citas del calendario correspondientes al dia seleccionado
 		#y las muestra en el label de la home screen
-
+		
+		#self.eventos_fecha = self.myCalendar.text
+		fecha = self.myCalendar.active_date
+		print(fecha)
+		self.myLabel.text = "%s.%s.%s" % tuple(self.myCalendar.active_date)
+		print("Label: " + self.myLabel.text)
+		
 		credentials = get_credentials()
 		http = credentials.authorize(httplib2.Http())
 		service = discovery.build('calendar', 'v3', http=http)
 
 		now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
-		print('Getting the upcoming 10 events')
+		print('Getting upcoming events. This might take a while ...')
 		eventsResult = service.events().list(
-		calendarId='primary', timeMin=now, maxResults=10, singleEvents=True,
+		calendarId='primary', timeMin=now, maxResults=100, singleEvents=True,
 		orderBy='startTime').execute()
 		events = eventsResult.get('items', [])
-		eventos = ''
+		
+		
+		
+		#self.eventos_fecha = self.myCalendar.text
+		#self.datepicked = datetime.datetime.strptime(self.laDate, '%d.%m.%Y').strftime('%d/%m/%Y')
+		#self.myLabel.text = str(self.datepicked)
+		#self.myLabel.text = "%s.%s.%s" % tuple(self.myCalendar.active_date)
+		eventosDeHoy = ''
 		if not events:
 			print('No upcoming events found.')
 		for event in events:
 			inicio = str(event['start'].get('date'))
 			summary = str(event['summary'] )
 			print(inicio, summary)
-			eventos += inicio + ' - ' + summary + '\n'
-		self.myLabel.text = eventos
+			eventosDeHoy += inicio + ' - ' + summary + '\n'
+		#self.myLabel.text = eventosDeHoy
 
 class LetMeKnowApp(App):
 

@@ -1,7 +1,7 @@
 #:kivy 1.0
 
 <home>:
-	myLabel: LaFecha 	#la property 'myLabel' del objeto Home apunta al
+	myLabel: eventos_fecha 	#la property 'myLabel' del objeto Home apunta al
 				# Label children de este objeto
 	myCalendar: cw_id	#la property 'myCalendar' del objeto Home
 
@@ -24,9 +24,9 @@
 			on_touch_up: root.showEvents()
 			
 		Label:
-			id: LaFecha
+			id: eventos_fecha
 			size_hint: 1, 0.3
-			text: 'Fecha'
+			text: 'Eventos de la Fecha Seleccionada'
 			
 		Button:
 			size_hint: 1, 0.1
