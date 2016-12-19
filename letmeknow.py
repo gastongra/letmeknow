@@ -103,7 +103,7 @@ class Home(Screen):
 			summary = str(event['summary'] )
 			print(inicio, summary)
 			eventosDeHoy += inicio + ' - ' + summary + '\n'
-		#self.myLabel.text = eventosDeHoy
+		self.myLabel.text = eventosDeHoy
 
 class LetMeKnowApp(App):
 
