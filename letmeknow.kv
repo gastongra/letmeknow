@@ -36,18 +36,85 @@
 		Button:
 			id: bt_id
 			size_hint: 1, 0.1
-			text: 'Crear Cita'
-			#on_press: root.get_events()
+			text: 'Crear Evento'
+			on_press: app.createEvent(root.myCalendar.active_date)
 			
 <startup>:
+
+	myLabel: lb_id
+
 	on_enter: print "on enter startup" 
-	#on_enter: app.get_events()
-	Label:
-		size_hint: 1, 0.5
-		text: 'Loading Calendar. Please wait ...'
-	Button:
-		size_hint: 1, 0.5
-		text: "click me!"
-		#on_release: app.root.current = 'home'
-		#on_release: app.root.get_screen('home').myCalendar.get_events()
-		on_release: app.get_events()
+
+	BoxLayout:
+		canvas.before:
+			Color:
+				rgb: .6, 0, 0
+			Rectangle:
+				pos: self.pos
+				size: self.size
+		orientation: 'vertical'
+		padding: 10
+		spacing: 10
+
+		Label:
+			id: lb_id
+			size_hint: 1, 0.5
+			text: 'Welcome! This app allows you to add events in your calendar'
+		
+		Button:
+			size_hint: 1, 0.5
+			text: "click me to retrieve your calendar!"
+			#on_release: app.root.current = 'home'
+			#on_release: app.root.get_screen('home').myCalendar.get_events()
+			on_release: app.get_events()
+
+
+
+
+<SaveDismiss>:
+	BoxLayout:
+		pos: root.pos
+		size: root.size	
+		orientation: 'horizontal'
+		Button:
+			text: "Dismiss"
+			size_hint: 0.5, 1
+			height: "40dp"
+			on_release: print "dismiss"      			
+
+		Button:
+			size_hint: 0.5, 1
+			text: "Save"
+			on_release: print "save"
+
+<evento>:
+	BoxLayout:
+		canvas.before:
+			Color:
+				rgb: .6, 0, 0
+			Rectangle:
+				pos: self.pos
+				size: self.size
+		orientation: 'vertical'
+		padding: 10
+		spacing: 10
+
+		Label:
+			id: lb_id
+			size_hint: 1, 0.1
+			text: 'Create Event'
+
+		TextInput:
+			id: ti_id
+			size_hint:1, 0.3
+			multiline: True
+			text: "Description"
+
+        CircularTimePicker:
+			size_hint:1, 0.5
+			id: tp_id
+			
+		SaveDismiss:
+			size_hint: 1,0.1
+
+

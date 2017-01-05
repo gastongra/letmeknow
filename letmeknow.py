@@ -13,6 +13,9 @@ from kivy.uix.widget import Widget
 from KivyCalendar import CalendarWidget
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.uix.textinput import TextInput
+from kivy.garden import circulardatetimepicker
+
 import datetime
 import time
 
@@ -24,8 +27,6 @@ import os
 from oauth2client import tools
 from oauth2client.file import Storage
 from apiclient import discovery
-
-
 from oauth2client import client
 ###################################################
 
@@ -44,21 +45,23 @@ APPLICATION_NAME = 'AgendaApp'
 
 Builder.load_file('letmeknow.kv')
 
-
+########################################################################
 '''
 Class Calendario needed to overwrite on_touch_up method from parent class CalendarWidget.
 This is to avoid bubling of the event, 
 as explained in https://kivy.org/docs/api-kivy.uix.widget.html#widget-event-bubbling:
 
-In order to stop this event bubbling, a method can return True. This tells Kivy the event has been handled and the event propagation stops. For example:
+	In order to stop this event bubbling, a method can return True. 
+	This tells Kivy the event has been handled and the event propagation stops. 
+	For example:
 
-class MyWidget(Widget):
-    def on_touch_down(self, touch):
-        If <some_condition>:
-            # Do stuff here and kill the event
-            return True
-        else:
-            return super(MyWidget, self).on_touch_down(touch)
+	class MyWidget(Widget):
+		def on_touch_down(self, touch):
+			If <some_condition>:
+				# Do stuff here and kill the event
+				return True
+			else:
+				return super(MyWidget, self).on_touch_down(touch)
 
 '''
 class Calendario(CalendarWidget):
@@ -71,7 +74,15 @@ class Home(Screen):
 
 class Startup(Screen):
 	pass
+
+class Evento(Screen):
+	pass
 					
+class SaveDismiss(Widget):
+	pass
+
+
+						
 class LetMeKnowApp(App):
 
 	def build(self):
@@ -85,11 +96,12 @@ class LetMeKnowApp(App):
 		#home.myLabel.text = "hola!!"
 		#home.myLabel.bind(text=home.myButton.setter('text'))
 		
-#		
-#		time.sleep(3)
 		home = Home(name='home')
-#		home.get_events()
-		sm.add_widget(home)		
+		sm.add_widget(home)
+		
+		evento = Evento(name='evento')
+		sm.add_widget(evento)
+
 
 #		sm.current = 'home'
 
@@ -123,6 +135,10 @@ class LetMeKnowApp(App):
 
 
 	def get_events(self):
+		
+		print('antes: ',self.root.get_screen('startup').myLabel.text)
+		self.root.get_screen('startup').myLabel.text = 'Loading your Calendar. Please wait ...'
+		print('despues: ',self.root.get_screen('startup').myLabel.text)
 		credentials = self.get_credentials()
 		http = credentials.authorize(httplib2.Http())
 
@@ -169,7 +185,13 @@ class LetMeKnowApp(App):
 			
 		self.root.get_screen('home').myLabel.text = str_eventos
 
-		
+	def createEvent(self, ev_date):
+		#dia, mes, anio = self.root.get_screen('home').myCalendar.active_date
+		dia, mes, anio = ev_date
+		#dt_fecha_actual = datetime.datetime(day=dia, month=mes, year=anio)
+		#str_fecha_actual = dt_fecha_actual.strftime("%d-%m-%Y")
+		self.root.current = 'evento'
+	
 		
 		
 if __name__ == '__main__':
