@@ -4,8 +4,10 @@
 	myLabel: eventos_fecha 	#la property 'myLabel' del objeto Home apunta al
 				# Label children de este objeto
 	myCalendar: cw_id	#la property 'myCalendar' del objeto Home
+	myButton: bt_id
 
-
+	on_enter: print "on enter home"
+	 
 #children de este objeto home:
 	BoxLayout:
 		canvas.before:
@@ -18,17 +20,34 @@
 		padding: 10
 		spacing: 10
 		
-		CalendarWidget:
+		Calendario:
 			id: cw_id
 			size_hint: 1, 0.6 #100% del ancho disp y 20% del alto disp.
-			on_touch_up: root.showEvents()
+			on_touch_up: app.showEvents()
+			#on_release: root.showEvents()
+			#active_date: root.showEvents()
+			#active_date: root.myLabel.setter('text')
 			
 		Label:
 			id: eventos_fecha
 			size_hint: 1, 0.3
-			text: 'Eventos de la Fecha Seleccionada'
-			
+			text: 'Hola!!'
+			#on_text: root.myButton.text=self.text
 		Button:
+			id: bt_id
 			size_hint: 1, 0.1
 			text: 'Crear Cita'
-			on_press: root.showEvents()
+			#on_press: root.get_events()
+			
+<startup>:
+	on_enter: print "on enter startup" 
+	#on_enter: app.get_events()
+	Label:
+		size_hint: 1, 0.5
+		text: 'Loading Calendar. Please wait ...'
+	Button:
+		size_hint: 1, 0.5
+		text: "click me!"
+		#on_release: app.root.current = 'home'
+		#on_release: app.root.get_screen('home').myCalendar.get_events()
+		on_release: app.get_events()
