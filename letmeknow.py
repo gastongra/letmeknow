@@ -12,7 +12,7 @@ from kivy.app import App
 from kivy.uix.widget import Widget
 from KivyCalendar import CalendarWidget
 from kivy.lang import Builder
-from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.uix.screenmanager import ScreenManager, Screen, SwapTransition, FadeTransition, FallOutTransition, RiseInTransition
 from kivy.uix.textinput import TextInput
 from kivy.garden import circulardatetimepicker
 
@@ -86,7 +86,7 @@ class SaveDismiss(Widget):
 class LetMeKnowApp(App):
 
 	def build(self):
-		sm = ScreenManager()
+		sm = ScreenManager(transition=SwapTransition())
 
 #		startup = Screen(name='startup')
 #		startup.add_widget(Label(text='Loading ...'))
