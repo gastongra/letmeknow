@@ -1,14 +1,12 @@
 #:kivy 1.0
 
 <home>:
-	myLabel: eventos_fecha 	#la property 'myLabel' del objeto Home apunta al
-				# Label children de este objeto
-	myCalendar: cw_id	#la property 'myCalendar' del objeto Home
-	myButton: bt_id
+	myLabel: eventos_fecha 	#property 'myLabel'
+	myCalendar: cw_id		#property 'myCalendar'
+	myButton: bt_id			#property 'myButton'
 
-	on_enter: print "on enter home"
+	on_enter: print "on enter home" #porque ocurre 2 veces?
 	 
-#children de este objeto home:
 	BoxLayout:
 		canvas.before:
 			Color:
@@ -33,14 +31,14 @@
 			size_hint: 1, 0.3
 			text: 'Hola!!'
 			#on_text: root.myButton.text=self.text
+
 		Button:
 			id: bt_id
 			size_hint: 1, 0.1
 			text: 'Crear Evento'
-			on_press: app.createEvent(root.myCalendar.active_date)
+			on_press: app.show_event_screen(root.myCalendar.active_date)
 			
 <startup>:
-
 	myLabel: lb_id
 
 	on_enter: print "on enter startup" 
@@ -68,14 +66,13 @@
 			#on_release: app.root.get_screen('home').myCalendar.get_events()
 			on_release: app.get_events()
 
-
-
-
 <SaveDismiss>:
+
 	BoxLayout:
 		pos: root.pos
 		size: root.size	
 		orientation: 'horizontal'
+
 		Button:
 			text: "Dismiss"
 			size_hint: 0.5, 1
@@ -85,9 +82,13 @@
 		Button:
 			size_hint: 0.5, 1
 			text: "Save"
-			on_release: print "save"
+			on_release: app.add_event()
 
 <evento>:
+	myLabel: lb_id
+	myTextInput: ti_id
+	myTimePicker: tp_id
+	
 	BoxLayout:
 		canvas.before:
 			Color:
@@ -104,16 +105,15 @@
 			size_hint: 1, 0.1
 			text: 'Create Event'
 
-		TextInput:
-			id: ti_id
-			size_hint:1, 0.3
-			multiline: True
-			text: "Description"
-
         CircularTimePicker:
 			size_hint:1, 0.5
 			id: tp_id
-			
+
+		TextInput:
+			id: ti_id
+			size_hint:1, 0.3
+			text: 'Description'
+	
 		SaveDismiss:
 			size_hint: 1,0.1
 
